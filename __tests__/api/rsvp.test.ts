@@ -1,0 +1,57 @@
+/**
+ * @jest-environment node
+ */
+import { POST } from '@/app/api/rsvp/route'
+import { NextRequest } from 'next/server'
+
+const mockInsert = jest.fn()
+const mockFrom = jest.fn()
+
+jest.mock('@/lib/supabase', () => ({
+  supabase: {
+    from: (...args: unknown[]) => mockFrom(...args),
+  },
+}))
+
+beforeAll(() => {
+  mockFrom.mockReturnValue({ insert: mockInsert })
+})
+
+function makeRequest(body: object): NextRequest {
+  return new NextRequest('http://localhost/api/rsvp', {
+    method: 'POST',
+    body: JSON.stringify(body),
+    headers: { 'Content-Type': 'application/json' },
+  })
+}
+
+describe('POST /api/rsvp', () => {
+  beforeEach(() => {
+    mockInsert.mockResolvedValue({ error: null })
+  })
+
+  it('returns 201 for a valid request', async () => {
+    const res = await POST(makeRequest({ guest_name: 'Alice', attending: true, message: 'Estaré ahí', colors: 'ub' }))
+    expect(res.status).toBe(201)
+    const json = await res.json()
+    expect(json.success).toBe(true)
+  })
+
+  it('returns 400 when guest_name is missing', async () => {
+    const res = await POST(makeRequest({ attending: true }))
+    expect(res.status).toBe(400)
+  })
+
+  it('returns 400 when attending is missing', async () => {
+    const res = await POST(makeRequest({ guest_name: 'Alice' }))
+    expect(res.status).toBe(400)
+  })
+
+  it('returns 500 when Supabase returns an error', async () => {
+    mockInsert.mockResolvedValueOnce({ error: new Error('DB error') })
+    const res = await POST(makeRequest({ guest_name: 'Alice', attending: false }))
+    expect(res.status).toBe(500)
+    const json = await res.json()
+    expect(json.error).toBeTruthy()
+  })
+})
