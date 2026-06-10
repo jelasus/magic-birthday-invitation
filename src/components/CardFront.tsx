@@ -7,6 +7,7 @@ interface CardFrontProps {
   guild: Guild
   config: PartyConfig
   guestName?: string
+  artUrl?: string
 }
 
 const BEVEL =
@@ -16,8 +17,9 @@ const BEVEL =
 const PARCHMENT_NOISE =
   "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E\")"
 
-export function CardFront({ guild, config, guestName }: CardFrontProps) {
+export function CardFront({ guild, config, guestName, artUrl }: CardFrontProps) {
   const { birthday, party, card } = config
+  const art = artUrl ?? card.artImageUrl
   const barInk = readableOn(guild.nameBarColor)
 
   return (
@@ -57,10 +59,11 @@ export function CardFront({ guild, config, guestName }: CardFrontProps) {
           style={{ background: 'linear-gradient(180deg,#1c1c1c,#000)' }}
         >
           <div
+            data-testid="card-art"
             className="w-full rounded-[3px]"
             style={{
               aspectRatio: '4 / 3',
-              backgroundImage: `url(${card.artImageUrl}), ${guild.frameGradient}`,
+              backgroundImage: `url(${art}), ${guild.frameGradient}`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               boxShadow: 'inset 0 0 0 1px rgba(0,0,0,0.6), inset 0 3px 14px rgba(0,0,0,0.45)',
