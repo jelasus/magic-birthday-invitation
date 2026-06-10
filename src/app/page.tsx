@@ -1,6 +1,6 @@
-import { GUILDS } from '@/lib/colors'
+import { CARD_POOL } from '@/lib/cards'
 import { getPartyConfig } from '@/lib/config'
-import { ART_POOL } from '@/lib/art'
+
 import { MtgCard } from '@/components/MtgCard'
 import { LinkGenerator } from '@/components/LinkGenerator'
 
@@ -50,16 +50,14 @@ export default async function GalleryPage({ searchParams }: GalleryPageProps) {
           Estilos de carta
         </h2>
         <p className="mb-8 text-center font-[family-name:var(--font-eb-garamond)] text-xs italic text-gray-500">
-          Vista previa de las 10 combinaciones de colores que se asignan al azar.
+          Vista previa de las cartas que se asignan al azar a cada invitado.
         </p>
 
         <div className="grid grid-cols-1 justify-items-center gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {Object.values(GUILDS).map((guild, i) => (
-            <div key={guild.code} className="flex flex-col items-center gap-2">
-              <MtgCard guild={guild} config={config} artUrl={ART_POOL[i % ART_POOL.length]} />
-              <p className="text-xs font-bold text-amber-300">
-                {guild.name} ({guild.code.toUpperCase()})
-              </p>
+          {CARD_POOL.map(card => (
+            <div key={card.id} className="flex flex-col items-center gap-2">
+              <MtgCard card={card} config={config} />
+              <p className="text-xs font-bold text-amber-300">{card.title}</p>
             </div>
           ))}
         </div>

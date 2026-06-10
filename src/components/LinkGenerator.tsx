@@ -1,14 +1,12 @@
 'use client'
 
 import { useState } from 'react'
-import { GUILDS, randomGuildCode } from '@/lib/colors'
+import { pickCard } from '@/lib/cards'
 
 interface GeneratedLink {
   id: number
   name: string
-  code: string
-  guildName: string
-  manaColors: [string, string]
+  cardTitle: string
   url: string
 }
 
@@ -22,13 +20,12 @@ export function LinkGenerator() {
     const trimmed = name.trim()
     if (!trimmed) return
 
-    const code = randomGuildCode()
-    const guild = GUILDS[code]
+    const card = pickCard(trimmed)
     const origin = typeof window !== 'undefined' ? window.location.origin : ''
-    const url = `${origin}/invite?guest=${encodeURIComponent(trimmed)}&colors=${code}`
+    const url = `${origin}/invite?guest=${encodeURIComponent(trimmed)}`
 
     setLinks(prev => [
-      { id: Date.now(), name: trimmed, code, guildName: guild.name, manaColors: guild.manaColors, url },
+      { id: Date.now(), name: trimmed, cardTitle: card.title, url },
       ...prev,
     ])
     setName('')
@@ -50,8 +47,8 @@ export function LinkGenerator() {
         🔗 Generar enlaces de invitación
       </h2>
       <p className="mb-4 text-sm text-gray-400">
-        Escribe el nombre del invitado y genera un enlace único. La combinación de colores se
-        asigna al azar.
+        Escribe el nombre del invitado y genera un enlace único. La carta se asigna automáticamente
+        según el nombre.
       </p>
 
       <form onSubmit={generate} className="flex gap-2">
@@ -82,18 +79,7 @@ export function LinkGenerator() {
             <li key={link.id} className="rounded-lg border border-gray-700 bg-gray-800/70 p-3">
               <div className="mb-2 flex items-center justify-between gap-2">
                 <span className="text-sm font-semibold text-white">{link.name}</span>
-                <span className="flex items-center gap-1.5 text-xs text-amber-300">
-                  <span className="flex gap-0.5">
-                    {link.manaColors.map((c, i) => (
-                      <span
-                        key={i}
-                        className="inline-block h-3 w-3 rounded-full ring-1 ring-black/40"
-                        style={{ background: c }}
-                      />
-                    ))}
-                  </span>
-                  {link.guildName} ({link.code.toUpperCase()})
-                </span>
+                <span className="text-xs text-amber-300">{link.cardTitle}</span>
               </div>
               <div className="flex gap-2">
                 <input

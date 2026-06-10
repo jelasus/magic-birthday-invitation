@@ -1,6 +1,5 @@
-import { getGuild, randomGuildCode } from '@/lib/colors'
 import { getPartyConfig } from '@/lib/config'
-import { ART_POOL, pickArt } from '@/lib/art'
+import { CARD_POOL, pickCard } from '@/lib/cards'
 import { MtgCard } from '@/components/MtgCard'
 import { MapEmbed } from '@/components/MapEmbed'
 import { RsvpForm } from '@/components/RsvpForm'
@@ -8,18 +7,15 @@ import { RsvpForm } from '@/components/RsvpForm'
 export const dynamic = 'force-dynamic'
 
 interface InvitePageProps {
-  searchParams: Promise<{ guest?: string; colors?: string; art?: string }>
+  searchParams: Promise<{ guest?: string; card?: string }>
 }
 
 export default async function InvitePage({ searchParams }: InvitePageProps) {
   const params = await searchParams
   const guestName = params.guest || ''
-  const guildCode = params.colors || randomGuildCode()
-  const guild = getGuild(guildCode)
   const config = getPartyConfig()
-  const artParam = params.art
-  const artUrl =
-    artParam && ART_POOL.includes(artParam) ? artParam : pickArt(guestName || null)
+  const card =
+    (params.card && CARD_POOL.find(c => c.id === params.card)) || pickCard(guestName || null)
 
   return (
     <main
@@ -33,7 +29,7 @@ export default async function InvitePage({ searchParams }: InvitePageProps) {
         Una aventura mágica te espera
       </p>
 
-      <MtgCard guild={guild} config={config} guestName={guestName} artUrl={artUrl} />
+      <MtgCard card={card} config={config} guestName={guestName} />
 
       <div className="mt-10 w-full max-w-sm">
         <h2 className="text-amber-400 font-bold text-lg mb-3 font-[family-name:var(--font-cinzel)]">
@@ -46,7 +42,7 @@ export default async function InvitePage({ searchParams }: InvitePageProps) {
         <h2 className="text-amber-400 font-bold text-lg mb-3 font-[family-name:var(--font-cinzel)]">
           ✅ Confirmar asistencia
         </h2>
-        <RsvpForm guestName={guestName} guildCode={guildCode} />
+        <RsvpForm guestName={guestName} cardId={card.id} />
       </div>
     </main>
   )

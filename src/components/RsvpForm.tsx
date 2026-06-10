@@ -4,12 +4,12 @@ import { useState } from 'react'
 
 interface RsvpFormProps {
   guestName: string
-  guildCode: string
+  cardId: string
 }
 
 type FormState = 'idle' | 'loading' | 'success' | 'error'
 
-export function RsvpForm({ guestName, guildCode }: RsvpFormProps) {
+export function RsvpForm({ guestName, cardId }: RsvpFormProps) {
   const [name, setName] = useState(guestName)
   const [attending, setAttending] = useState<boolean | null>(null)
   const [state, setState] = useState<FormState>('idle')
@@ -23,7 +23,7 @@ export function RsvpForm({ guestName, guildCode }: RsvpFormProps) {
       const res = await fetch('/api/rsvp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ guest_name: name, attending, colors: guildCode }),
+        body: JSON.stringify({ guest_name: name, attending, colors: cardId }),
       })
       const data = await res.json()
       if (!res.ok) {
