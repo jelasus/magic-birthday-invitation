@@ -1,0 +1,18 @@
+{
+  "birthday": {
+    "name": "Gandalf",
+    "age": 2019,
+    "flavorText": "Incluso el Multiverso se detiene por el pastel."
+  },
+  "party": {
+    "date": "Sábado, 1 de enero de 2000",
+    "time": "00:00 hrs",
+    "venue": "La Comarca",
+    "address": "Bolsón Cerrado 1, La Comarca, Tierra Media",
+    "mapsEmbedUrl": "https://maps.google.com/embed?pb=0"
+  },
+  "card": {
+    "artImageUrl": "/images/card-art.svg",
+    "setSymbol": "🎂"
+  }
+}
