@@ -28,6 +28,11 @@ describe('RsvpForm', () => {
     expect(screen.getByDisplayValue('Alice')).toBeInTheDocument()
   })
 
+  it('does not render a message field', () => {
+    render(<RsvpForm guestName="Alice" guildCode="ub" />)
+    expect(screen.queryByLabelText(/Mensaje/i)).not.toBeInTheDocument()
+  })
+
   it('submit button is disabled when attending is not selected', () => {
     render(<RsvpForm guestName="Alice" guildCode="ub" />)
     expect(screen.getByRole('button', { name: /Confirmar asistencia/ })).toBeDisabled()

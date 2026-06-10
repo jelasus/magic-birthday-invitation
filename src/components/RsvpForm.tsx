@@ -12,7 +12,6 @@ type FormState = 'idle' | 'loading' | 'success' | 'error'
 export function RsvpForm({ guestName, guildCode }: RsvpFormProps) {
   const [name, setName] = useState(guestName)
   const [attending, setAttending] = useState<boolean | null>(null)
-  const [message, setMessage] = useState('')
   const [state, setState] = useState<FormState>('idle')
   const [errorMsg, setErrorMsg] = useState('')
 
@@ -24,7 +23,7 @@ export function RsvpForm({ guestName, guildCode }: RsvpFormProps) {
       const res = await fetch('/api/rsvp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ guest_name: name, attending, message, colors: guildCode }),
+        body: JSON.stringify({ guest_name: name, attending, colors: guildCode }),
       })
       const data = await res.json()
       if (!res.ok) {
@@ -93,22 +92,6 @@ export function RsvpForm({ guestName, guildCode }: RsvpFormProps) {
             ❌ No podré
           </button>
         </div>
-      </div>
-
-      <div>
-        <label htmlFor="rsvp-message" className="block text-amber-300 text-sm font-medium mb-1">
-          Mensaje para el festejado{' '}
-          <span className="text-gray-500">(opcional)</span>
-        </label>
-        <textarea
-          id="rsvp-message"
-          value={message}
-          onChange={e => setMessage(e.target.value)}
-          rows={3}
-          maxLength={2000}
-          className="w-full bg-gray-800 border border-gray-600 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-amber-400 resize-none"
-          placeholder="Escribe un mensaje..."
-        />
       </div>
 
       {state === 'error' && (
