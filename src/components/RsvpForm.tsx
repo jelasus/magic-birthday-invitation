@@ -52,10 +52,11 @@ export function RsvpForm({ guestName, guildCode }: RsvpFormProps) {
   return (
     <form onSubmit={handleSubmit} className="bg-gray-900 border border-gray-700 rounded-xl p-6 space-y-4">
       <div>
-        <label className="block text-amber-300 text-sm font-medium mb-1">
+        <label htmlFor="rsvp-name" className="block text-amber-300 text-sm font-medium mb-1">
           Tu nombre
         </label>
         <input
+          id="rsvp-name"
           type="text"
           value={name}
           onChange={e => setName(e.target.value)}
@@ -94,11 +95,12 @@ export function RsvpForm({ guestName, guildCode }: RsvpFormProps) {
       </div>
 
       <div>
-        <label className="block text-amber-300 text-sm font-medium mb-1">
+        <label htmlFor="rsvp-message" className="block text-amber-300 text-sm font-medium mb-1">
           Mensaje para el festejado{' '}
           <span className="text-gray-500">(opcional)</span>
         </label>
         <textarea
+          id="rsvp-message"
           value={message}
           onChange={e => setMessage(e.target.value)}
           rows={3}

@@ -29,7 +29,7 @@ export function MtgCard({ guild, config, guestName }: MtgCardProps) {
         </span>
         <div className="flex gap-1 shrink-0">
           {guild.manaColors.map((color, i) => (
-            <ManaSymbol key={i} color={color} letter={guild.colors[i].toUpperCase()} />
+            <ManaSymbol key={guild.colors[i]} color={color} letter={guild.colors[i].toUpperCase()} />
           ))}
         </div>
       </div>
