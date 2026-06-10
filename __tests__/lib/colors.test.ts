@@ -37,6 +37,21 @@ describe('getGuild', () => {
     const guild = getGuild('xx')
     expect(Object.keys(GUILDS)).toContain(guild.code)
   })
+
+  it('does not throw and returns a valid guild for null input', () => {
+    const guild = getGuild(null)
+    expect(Object.keys(GUILDS)).toContain(guild.code)
+  })
+
+  it('does not throw and returns a valid guild for empty string', () => {
+    const guild = getGuild('')
+    expect(Object.keys(GUILDS)).toContain(guild.code)
+  })
+
+  it('does not throw and returns a valid guild for single-char input', () => {
+    const guild = getGuild('u')
+    expect(Object.keys(GUILDS)).toContain(guild.code)
+  })
 })
 
 describe('randomGuildCode', () => {

@@ -23,7 +23,7 @@ export const GUILDS: Record<GuildCode, Guild> = {
     code: 'wb', name: 'Orzhov', colors: ['w', 'b'],
     frameGradient: 'linear-gradient(160deg, #EDE9D0 0%, #9C9C9C 55%, #2C2C2C 100%)',
     nameBarColor: '#C8C0A8', textBoxColor: '#E8E0D0',
-    manaColors: ['#F0ECE0', '#3C3C3C'], borderColor: '#8C8C7C',
+    manaColors: ['#F0ECE0', '#4A4A4A'], borderColor: '#8C8C7C',
   },
   wr: {
     code: 'wr', name: 'Boros', colors: ['w', 'r'],
@@ -41,7 +41,7 @@ export const GUILDS: Record<GuildCode, Guild> = {
     code: 'ub', name: 'Dimir', colors: ['u', 'b'],
     frameGradient: 'linear-gradient(160deg, #2A4870 0%, #1A2A3C 55%, #0D0D0D 100%)',
     nameBarColor: '#1E3448', textBoxColor: '#162435',
-    manaColors: ['#4A90D9', '#6C6C6C'], borderColor: '#2A4060',
+    manaColors: ['#4A90D9', '#4A4A4A'], borderColor: '#2A4060',
   },
   ur: {
     code: 'ur', name: 'Izzet', colors: ['u', 'r'],
@@ -59,13 +59,13 @@ export const GUILDS: Record<GuildCode, Guild> = {
     code: 'br', name: 'Rakdos', colors: ['b', 'r'],
     frameGradient: 'linear-gradient(160deg, #1C1C1C 0%, #581818 55%, #8B0000 100%)',
     nameBarColor: '#2C1818', textBoxColor: '#201010',
-    manaColors: ['#6C6C6C', '#D4180C'], borderColor: '#580808',
+    manaColors: ['#4A4A4A', '#D4180C'], borderColor: '#580808',
   },
   bg: {
     code: 'bg', name: 'Golgari', colors: ['b', 'g'],
     frameGradient: 'linear-gradient(160deg, #1A1A1A 0%, #253018 55%, #1A3820 100%)',
     nameBarColor: '#202818', textBoxColor: '#181E10',
-    manaColors: ['#6C6C6C', '#2D7A40'], borderColor: '#303818',
+    manaColors: ['#4A4A4A', '#2D7A40'], borderColor: '#303818',
   },
   rg: {
     code: 'rg', name: 'Gruul', colors: ['r', 'g'],
@@ -75,13 +75,13 @@ export const GUILDS: Record<GuildCode, Guild> = {
   },
 }
 
-export function getGuild(code: string): Guild {
+export function getGuild(code: string | null | undefined): Guild {
+  if (!code || code.length !== 2) return GUILDS[randomGuildCode()]
   const normalized = code.toLowerCase()
   if (GUILDS[normalized as GuildCode]) return GUILDS[normalized as GuildCode]
   const reversed = (normalized[1] + normalized[0]) as GuildCode
   if (GUILDS[reversed]) return GUILDS[reversed]
-  const codes = Object.keys(GUILDS) as GuildCode[]
-  return GUILDS[codes[Math.floor(Math.random() * codes.length)]]
+  return GUILDS[randomGuildCode()]
 }
 
 export function randomGuildCode(): GuildCode {
