@@ -75,4 +75,22 @@ describe('MtgCard', () => {
     await user.keyboard('{Enter}')
     expect(card).toHaveAttribute('aria-pressed', 'true')
   })
+
+  it('flips on Space key', async () => {
+    const user = userEvent.setup()
+    render(<MtgCard guild={GUILDS.ub} config={mockConfig} />)
+    const card = screen.getByRole('button', { name: /carta/i })
+    card.focus()
+    await user.keyboard(' ')
+    expect(card).toHaveAttribute('aria-pressed', 'true')
+  })
+
+  // The flip uses a CSS `preserve-3d` context. A native <button> wraps its
+  // children in an anonymous block frame that flattens that context (see
+  // Mozilla bug 1629011), so the interactive element must NOT be a <button>.
+  it('uses a non-button element for the flip control to keep preserve-3d intact', () => {
+    render(<MtgCard guild={GUILDS.ub} config={mockConfig} />)
+    const card = screen.getByRole('button', { name: /carta/i })
+    expect(card.tagName).not.toBe('BUTTON')
+  })
 })
