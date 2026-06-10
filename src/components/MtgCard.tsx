@@ -10,9 +10,10 @@ interface MtgCardProps {
   guild: Guild
   config: PartyConfig
   guestName?: string
+  artUrl?: string
 }
 
-export function MtgCard({ guild, config, guestName }: MtgCardProps) {
+export function MtgCard({ guild, config, guestName, artUrl }: MtgCardProps) {
   const [flipped, setFlipped] = useState(false)
   const toggle = () => setFlipped(f => !f)
 
@@ -45,7 +46,7 @@ export function MtgCard({ guild, config, guestName }: MtgCardProps) {
       >
         <div className="card-flip__inner">
           <div className="card-flip__face card-flip__face--front">
-            <CardFront guild={guild} config={config} guestName={guestName} />
+            <CardFront guild={guild} config={config} guestName={guestName} artUrl={artUrl} />
           </div>
           <div className="card-flip__face card-flip__face--back">
             <CardBack />
