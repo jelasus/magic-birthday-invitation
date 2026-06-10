@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { MtgCard } from '@/components/MtgCard'
 import { GUILDS } from '@/lib/colors'
 import type { PartyConfig } from '@/lib/config'
@@ -6,7 +7,7 @@ import type { PartyConfig } from '@/lib/config'
 const mockConfig: PartyConfig = {
   birthday: { name: 'Brayan', age: 28, flavorText: 'Texto de ambientación.' },
   party: { date: 'Sábado 1', time: '19:00', venue: 'El Lugar', address: 'Calle 123', mapsEmbedUrl: 'https://maps.test' },
-  card: { artImageUrl: '/images/card-art.svg', setSymbol: '🎂' },
+  card: { artImageUrl: '/images/cake-art.svg', setSymbol: '🎂' },
 }
 
 describe('MtgCard', () => {
@@ -50,5 +51,28 @@ describe('MtgCard', () => {
   it('renders power/toughness with age', () => {
     render(<MtgCard guild={GUILDS.ub} config={mockConfig} />)
     expect(screen.getByText('28/∞')).toBeInTheDocument()
+  })
+
+  it('shows the authentic Magic back', () => {
+    render(<MtgCard guild={GUILDS.ub} config={mockConfig} />)
+    expect(screen.getByText(/Deckmaster/i)).toBeInTheDocument()
+  })
+
+  it('flips when clicked', async () => {
+    const user = userEvent.setup()
+    render(<MtgCard guild={GUILDS.ub} config={mockConfig} />)
+    const card = screen.getByRole('button', { name: /carta/i })
+    expect(card).toHaveAttribute('aria-pressed', 'false')
+    await user.click(card)
+    expect(card).toHaveAttribute('aria-pressed', 'true')
+  })
+
+  it('flips on Enter key', async () => {
+    const user = userEvent.setup()
+    render(<MtgCard guild={GUILDS.ub} config={mockConfig} />)
+    const card = screen.getByRole('button', { name: /carta/i })
+    card.focus()
+    await user.keyboard('{Enter}')
+    expect(card).toHaveAttribute('aria-pressed', 'true')
   })
 })

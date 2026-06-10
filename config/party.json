@@ -12,7 +12,7 @@
     "mapsEmbedUrl": "https://maps.google.com/embed?pb=0"
   },
   "card": {
-    "artImageUrl": "/images/card-art.svg",
+    "artImageUrl": "/images/cake-art.svg",
     "setSymbol": "🎂"
   }
 }
