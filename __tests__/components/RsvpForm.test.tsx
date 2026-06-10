@@ -24,23 +24,23 @@ describe('RsvpForm', () => {
   })
 
   it('pre-fills the guest name from props', () => {
-    render(<RsvpForm guestName="Alice" guildCode="ub" />)
+    render(<RsvpForm guestName="Alice" cardId="wish" />)
     expect(screen.getByDisplayValue('Alice')).toBeInTheDocument()
   })
 
   it('does not render a message field', () => {
-    render(<RsvpForm guestName="Alice" guildCode="ub" />)
+    render(<RsvpForm guestName="Alice" cardId="wish" />)
     expect(screen.queryByLabelText(/Mensaje/i)).not.toBeInTheDocument()
   })
 
   it('submit button is disabled when attending is not selected', () => {
-    render(<RsvpForm guestName="Alice" guildCode="ub" />)
+    render(<RsvpForm guestName="Alice" cardId="wish" />)
     expect(screen.getByRole('button', { name: /Confirmar asistencia/ })).toBeDisabled()
   })
 
   it('submit button is enabled after selecting attending', async () => {
     const user = userEvent.setup()
-    render(<RsvpForm guestName="Alice" guildCode="ub" />)
+    render(<RsvpForm guestName="Alice" cardId="wish" />)
     await user.click(screen.getByRole('button', { name: /Sí, asistiré/ }))
     expect(screen.getByRole('button', { name: /Confirmar asistencia/ })).not.toBeDisabled()
   })
@@ -48,7 +48,7 @@ describe('RsvpForm', () => {
   it('shows success message after successful submission', async () => {
     mockFetchSuccess()
     const user = userEvent.setup()
-    render(<RsvpForm guestName="Alice" guildCode="ub" />)
+    render(<RsvpForm guestName="Alice" cardId="wish" />)
     await user.click(screen.getByRole('button', { name: /Sí, asistiré/ }))
     await user.click(screen.getByRole('button', { name: /Confirmar asistencia/ }))
     await waitFor(() =>
@@ -59,7 +59,7 @@ describe('RsvpForm', () => {
   it('shows error message after failed submission', async () => {
     mockFetchError()
     const user = userEvent.setup()
-    render(<RsvpForm guestName="Alice" guildCode="ub" />)
+    render(<RsvpForm guestName="Alice" cardId="wish" />)
     await user.click(screen.getByRole('button', { name: /Sí, asistiré/ }))
     await user.click(screen.getByRole('button', { name: /Confirmar asistencia/ }))
     await waitFor(() =>
