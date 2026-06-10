@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C /home/sadrac/magic-birthday-invitation rev-parse HEAD)",
+      "Bash(npx create-next-app@latest *)",
+      "Read(//home/sadrac/.nvm/versions/node/**)",
+      "Read(//home/sadrac/.volta/**)"
+    ]
+  }
+}
