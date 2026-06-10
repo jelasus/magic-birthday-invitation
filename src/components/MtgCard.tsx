@@ -22,7 +22,7 @@ export function MtgCard({ guild, config, guestName }: MtgCardProps) {
         aria-label={flipped ? 'Mostrar el frente de la carta' : 'Voltear la carta'}
         aria-pressed={flipped}
         onClick={() => setFlipped(f => !f)}
-        className={`card-flip block w-[330px] cursor-pointer rounded-[16px] p-0 ${
+        className={`card-flip block w-[330px] cursor-pointer rounded-[16px] p-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${
           flipped ? 'card-flip--flipped' : ''
         }`}
         style={{
@@ -30,7 +30,6 @@ export function MtgCard({ guild, config, guestName }: MtgCardProps) {
           background: 'transparent',
           border: 'none',
           boxShadow: `0 0 26px ${guild.manaColors[0]}40, 0 14px 38px rgba(0,0,0,0.75)`,
-          borderRadius: 16,
         }}
       >
         <div className="card-flip__inner">
