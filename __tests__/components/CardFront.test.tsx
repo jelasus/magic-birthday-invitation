@@ -30,4 +30,14 @@ describe('CardFront', () => {
     render(<CardFront guild={GUILDS.ub} config={config} guestName="Alice" />)
     expect(screen.getByText(/Alice/)).toBeInTheDocument()
   })
+
+  it('uses artUrl when provided, overriding config art', () => {
+    render(<CardFront guild={GUILDS.ub} config={config} artUrl="/images/art/art2.jpg" />)
+    expect(screen.getByTestId('card-art').style.backgroundImage).toContain('art2.jpg')
+  })
+
+  it('falls back to config art when artUrl is omitted', () => {
+    render(<CardFront guild={GUILDS.ub} config={config} />)
+    expect(screen.getByTestId('card-art').style.backgroundImage).toContain('cake-art.svg')
+  })
 })

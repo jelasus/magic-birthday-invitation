@@ -93,4 +93,9 @@ describe('MtgCard', () => {
     const card = screen.getByRole('button', { name: /carta/i })
     expect(card.tagName).not.toBe('BUTTON')
   })
+
+  it('passes artUrl through to the front face', () => {
+    render(<MtgCard guild={GUILDS.ub} config={mockConfig} artUrl="/images/art/art3.jpg" />)
+    expect(screen.getByTestId('card-art').style.backgroundImage).toContain('art3.jpg')
+  })
 })
