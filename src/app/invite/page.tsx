@@ -25,7 +25,7 @@ export default async function InvitePage({ searchParams }: InvitePageProps) {
       <h1 className="text-4xl font-black text-amber-400 mb-1 text-center tracking-wide drop-shadow-lg font-[family-name:var(--font-cinzel)]">
         ¡Estás invitado!
       </h1>
-      <p className="text-amber-200 mb-8 text-sm text-center italic font-[family-name:var(--font-im-fell)]">
+      <p className="text-amber-200 mb-8 text-base text-center italic font-[family-name:var(--font-eb-garamond)]">
         Una aventura mágica te espera
       </p>
 

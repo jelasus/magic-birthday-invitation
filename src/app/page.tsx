@@ -1,56 +1,104 @@
 import { GUILDS } from '@/lib/colors'
 import { getPartyConfig } from '@/lib/config'
 import { MtgCard } from '@/components/MtgCard'
+import { LinkGenerator } from '@/components/LinkGenerator'
 
-export default function GalleryPage() {
+export const dynamic = 'force-dynamic'
+
+interface GalleryPageProps {
+  searchParams: Promise<{ key?: string }>
+}
+
+export default async function GalleryPage({ searchParams }: GalleryPageProps) {
+  const { key } = await searchParams
+  const adminKey = process.env.ADMIN_KEY
+  const locked = Boolean(adminKey) && key !== adminKey
+
+  if (locked) {
+    return <LockScreen wrong={key !== undefined} />
+  }
+
   const config = getPartyConfig()
 
   return (
     <main
-      className="min-h-screen py-12 px-4"
+      className="min-h-screen px-4 py-12"
       style={{ background: 'linear-gradient(135deg, #0d0d1a 0%, #1a0d2e 50%, #0d1a0d 100%)' }}
     >
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-4xl font-black text-amber-400 text-center mb-1 tracking-wide font-[family-name:var(--font-cinzel)]">
-          Invitación Mágica de Cumpleaños
+      <div className="mx-auto max-w-6xl">
+        <h1 className="mb-1 text-center font-[family-name:var(--font-cinzel)] text-4xl font-bold tracking-wide text-amber-400">
+          Panel del Anfitrión
         </h1>
-        <p className="text-amber-200 text-center mb-1 text-sm italic font-[family-name:var(--font-im-fell)]">
+        <p className="mb-1 text-center font-[family-name:var(--font-eb-garamond)] text-sm italic text-amber-200">
           Celebración del {config.birthday.age}° Cumpleaños de {config.birthday.name}
         </p>
-        <p className="text-gray-500 text-center mb-10 text-xs italic font-[family-name:var(--font-im-fell)]">
-          Cada invitado recibe un enlace personalizado con su combinación de colores
+        <p className="mb-10 text-center font-[family-name:var(--font-eb-garamond)] text-xs italic text-gray-500">
+          Genera enlaces únicos para cada invitado y compártelos.
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 justify-items-center">
+        {!adminKey && (
+          <div className="mx-auto mb-8 max-w-xl rounded-lg border border-yellow-700/60 bg-yellow-950/40 p-3 text-center text-xs text-yellow-300">
+            ⚠️ Esta página es pública. Configura la variable de entorno{' '}
+            <code className="text-yellow-200">ADMIN_KEY</code> en Vercel para protegerla.
+          </div>
+        )}
+
+        <LinkGenerator />
+
+        <h2 className="mb-1 mt-16 text-center font-[family-name:var(--font-cinzel)] text-2xl font-semibold text-amber-400">
+          Estilos de carta
+        </h2>
+        <p className="mb-8 text-center font-[family-name:var(--font-eb-garamond)] text-xs italic text-gray-500">
+          Vista previa de las 10 combinaciones de colores que se asignan al azar.
+        </p>
+
+        <div className="grid grid-cols-1 justify-items-center gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {Object.values(GUILDS).map(guild => (
             <div key={guild.code} className="flex flex-col items-center gap-2">
               <MtgCard guild={guild} config={config} />
-              <p className="text-amber-300 text-xs font-bold">
+              <p className="text-xs font-bold text-amber-300">
                 {guild.name} ({guild.code.toUpperCase()})
               </p>
             </div>
           ))}
         </div>
-
-        <div className="mt-16 bg-gray-900 border border-amber-900 rounded-xl p-6 max-w-lg mx-auto">
-          <h2 className="text-amber-400 font-bold text-lg mb-3">
-            📨 Generar enlace de invitación
-          </h2>
-          <p className="text-gray-300 text-sm mb-3">
-            Comparte un enlace personalizado con cada invitado:
-          </p>
-          <code className="block bg-gray-800 rounded-lg p-3 text-amber-300 text-xs break-all">
-            /invite?guest=NombreInvitado&amp;colors=ub
-          </code>
-          <p className="text-gray-500 text-xs mt-2">
-            Cambia{' '}
-            <span className="text-amber-400">NombreInvitado</span> por el nombre del
-            invitado y{' '}
-            <span className="text-amber-400">ub</span> por el código de colores de la
-            tabla de arriba.
-          </p>
-        </div>
       </div>
+    </main>
+  )
+}
+
+function LockScreen({ wrong }: { wrong: boolean }) {
+  return (
+    <main
+      className="flex min-h-screen items-center justify-center px-4"
+      style={{ background: 'linear-gradient(135deg, #0d0d1a 0%, #1a0d2e 50%, #0d1a0d 100%)' }}
+    >
+      <form
+        method="get"
+        action="/"
+        className="w-full max-w-sm rounded-xl border border-amber-900/60 bg-gray-900/80 p-6 text-center"
+      >
+        <h1 className="mb-2 font-[family-name:var(--font-cinzel)] text-2xl font-bold text-amber-400">
+          🔒 Área privada
+        </h1>
+        <p className="mb-4 text-sm text-gray-400">
+          Introduce la clave de anfitrión para generar enlaces.
+        </p>
+        <input
+          type="password"
+          name="key"
+          autoFocus
+          placeholder="Clave de acceso"
+          className="mb-3 w-full rounded-lg border border-gray-600 bg-gray-800 px-3 py-2 text-sm text-white focus:border-amber-400 focus:outline-none"
+        />
+        {wrong && <p className="mb-3 text-xs text-red-400">Clave incorrecta.</p>}
+        <button
+          type="submit"
+          className="w-full rounded-lg bg-amber-700 py-2 text-sm font-bold text-white transition-colors hover:bg-amber-600"
+        >
+          Entrar
+        </button>
+      </form>
     </main>
   )
 }
