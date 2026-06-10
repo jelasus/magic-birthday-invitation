@@ -1,21 +1,22 @@
 'use client'
 
 import { useState } from 'react'
-import type { Guild } from '@/lib/colors'
 import type { PartyConfig } from '@/lib/config'
+import type { CardIdentity } from '@/lib/cards'
+import { manaInfo } from '@/lib/mana'
 import { CardFront } from '@/components/CardFront'
 import { CardBack } from '@/components/CardBack'
 
 interface MtgCardProps {
-  guild: Guild
+  card: CardIdentity
   config: PartyConfig
   guestName?: string
-  artUrl?: string
 }
 
-export function MtgCard({ guild, config, guestName, artUrl }: MtgCardProps) {
+export function MtgCard({ card, config, guestName }: MtgCardProps) {
   const [flipped, setFlipped] = useState(false)
   const toggle = () => setFlipped(f => !f)
+  const glow = card.colors[0] ? manaInfo(card.colors[0]).pipColor : '#c7ccd2'
 
   // The flip relies on a CSS `transform-style: preserve-3d` context. A native
   // <button> wraps its children in an anonymous block frame that flattens that
@@ -41,12 +42,12 @@ export function MtgCard({ guild, config, guestName, artUrl }: MtgCardProps) {
         }`}
         style={{
           aspectRatio: '2.5 / 3.5',
-          boxShadow: `0 0 26px ${guild.manaColors[0]}40, 0 14px 38px rgba(0,0,0,0.75)`,
+          boxShadow: `0 0 26px ${glow}40, 0 14px 38px rgba(0,0,0,0.75)`,
         }}
       >
         <div className="card-flip__inner">
           <div className="card-flip__face card-flip__face--front">
-            <CardFront guild={guild} config={config} guestName={guestName} artUrl={artUrl} />
+            <CardFront card={card} config={config} guestName={guestName} />
           </div>
           <div className="card-flip__face card-flip__face--back">
             <CardBack />
