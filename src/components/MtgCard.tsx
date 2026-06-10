@@ -14,21 +14,32 @@ interface MtgCardProps {
 
 export function MtgCard({ guild, config, guestName }: MtgCardProps) {
   const [flipped, setFlipped] = useState(false)
+  const toggle = () => setFlipped(f => !f)
 
+  // The flip relies on a CSS `transform-style: preserve-3d` context. A native
+  // <button> wraps its children in an anonymous block frame that flattens that
+  // context, so the back face never rotates into view (Mozilla bug 1629011,
+  // and the same flattening occurs in Chromium). The control is therefore a
+  // div with role="button" plus explicit Enter/Space handling for a11y parity.
   return (
     <div className="flex flex-col items-center gap-2">
-      <button
-        type="button"
+      <div
+        role="button"
+        tabIndex={0}
         aria-label={flipped ? 'Mostrar el frente de la carta' : 'Voltear la carta'}
         aria-pressed={flipped}
-        onClick={() => setFlipped(f => !f)}
-        className={`card-flip block w-[330px] cursor-pointer rounded-[16px] p-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${
+        onClick={toggle}
+        onKeyDown={e => {
+          if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+            e.preventDefault()
+            toggle()
+          }
+        }}
+        className={`card-flip w-[330px] cursor-pointer rounded-[16px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${
           flipped ? 'card-flip--flipped' : ''
         }`}
         style={{
           aspectRatio: '2.5 / 3.5',
-          background: 'transparent',
-          border: 'none',
           boxShadow: `0 0 26px ${guild.manaColors[0]}40, 0 14px 38px rgba(0,0,0,0.75)`,
         }}
       >
@@ -40,7 +51,7 @@ export function MtgCard({ guild, config, guestName }: MtgCardProps) {
             <CardBack />
           </div>
         </div>
-      </button>
+      </div>
       <span className="text-[11px] italic text-amber-200/70 font-[family-name:var(--font-eb-garamond)]">
         toca para ver el reverso ↻
       </span>
