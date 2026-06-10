@@ -22,10 +22,10 @@ export async function POST(req: NextRequest) {
   }
 
   const { error } = await supabase.from('rsvps').insert({
-    guest_name: String(guest_name).trim(),
+    guest_name: String(guest_name).trim().slice(0, 200),
     attending: Boolean(attending),
-    message: message ? String(message).trim() : null,
-    colors: colors ? String(colors) : null,
+    message: message ? String(message).trim().slice(0, 2000) : null,
+    colors: colors ? String(colors).slice(0, 10) : null,
   })
 
   if (error) {

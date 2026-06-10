@@ -61,6 +61,7 @@ export function RsvpForm({ guestName, guildCode }: RsvpFormProps) {
           value={name}
           onChange={e => setName(e.target.value)}
           required
+          maxLength={200}
           className="w-full bg-gray-800 border border-gray-600 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-amber-400"
           placeholder="Tu nombre completo"
         />
@@ -104,6 +105,7 @@ export function RsvpForm({ guestName, guildCode }: RsvpFormProps) {
           value={message}
           onChange={e => setMessage(e.target.value)}
           rows={3}
+          maxLength={2000}
           className="w-full bg-gray-800 border border-gray-600 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-amber-400 resize-none"
           placeholder="Escribe un mensaje..."
         />
