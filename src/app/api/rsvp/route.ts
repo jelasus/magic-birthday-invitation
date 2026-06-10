@@ -2,7 +2,16 @@ import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
 
 export async function POST(req: NextRequest) {
-  const body = await req.json()
+  let body: { guest_name?: unknown; attending?: unknown; message?: unknown; colors?: unknown }
+  try {
+    body = await req.json()
+  } catch {
+    return NextResponse.json(
+      { error: 'Formato de solicitud inválido.' },
+      { status: 400 }
+    )
+  }
+
   const { guest_name, attending, message, colors } = body
 
   if (!guest_name || attending === undefined || attending === null) {

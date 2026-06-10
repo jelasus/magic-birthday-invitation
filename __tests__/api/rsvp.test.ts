@@ -52,6 +52,16 @@ describe('POST /api/rsvp', () => {
     const res = await POST(makeRequest({ guest_name: 'Alice', attending: false }))
     expect(res.status).toBe(500)
     const json = await res.json()
-    expect(json.error).toBeTruthy()
+    expect(json.error).toBe('Ocurrió un error. Por favor intenta de nuevo.')
+  })
+
+  it('returns 400 for malformed request body', async () => {
+    const req = new NextRequest('http://localhost/api/rsvp', {
+      method: 'POST',
+      body: 'not json{',
+      headers: { 'Content-Type': 'application/json' },
+    })
+    const res = await POST(req)
+    expect(res.status).toBe(400)
   })
 })
