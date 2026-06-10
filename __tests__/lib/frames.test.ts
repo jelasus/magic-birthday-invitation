@@ -5,7 +5,7 @@ describe('frameFor', () => {
     const f = frameFor([])
     expect(f.frameGradient).toContain('linear-gradient')
     expect(f.barColor).toMatch(/^#[0-9a-fA-F]{6}$/)
-    expect([f.barInk]).toContain(f.barInk) // present
+    expect(['#15110a', '#f4ecd8']).toContain(f.barInk)
   })
 
   it('returns a mono frame for a single color', () => {
@@ -22,5 +22,18 @@ describe('frameFor', () => {
   it('chooses a readable ink (dark or parchment)', () => {
     expect(['#15110a', '#f4ecd8']).toContain(frameFor(['b']).barInk)
     expect(['#15110a', '#f4ecd8']).toContain(frameFor(['w']).barInk)
+  })
+
+  it('gives every color identity a distinct frame', () => {
+    const gradients = [
+      frameFor([]).frameGradient,         // artifact
+      frameFor(['w']).frameGradient,
+      frameFor(['u']).frameGradient,
+      frameFor(['b']).frameGradient,
+      frameFor(['r']).frameGradient,
+      frameFor(['g']).frameGradient,
+      frameFor(['w', 'u']).frameGradient, // gold
+    ]
+    expect(new Set(gradients).size).toBe(gradients.length)
   })
 })

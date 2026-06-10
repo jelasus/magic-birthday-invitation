@@ -21,5 +21,5 @@ const ARTIFACT = { frameGradient: 'linear-gradient(160deg,#d8dde2 0%,#aab2bb 55%
 /** Frame style from a card's color identity: 0 = artifact, 1 = mono, 2+ = gold. */
 export function frameFor(colors: ColorCode[]): FrameStyle {
   const base = colors.length === 0 ? ARTIFACT : colors.length >= 2 ? GOLD : MONO[colors[0]]
-  return { frameGradient: base.frameGradient, barColor: base.barColor, barInk: readableOn(base.barColor) }
+  return { ...base, barInk: readableOn(base.barColor) }
 }
