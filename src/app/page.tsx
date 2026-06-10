@@ -11,13 +11,13 @@ export default function GalleryPage() {
       style={{ background: 'linear-gradient(135deg, #0d0d1a 0%, #1a0d2e 50%, #0d1a0d 100%)' }}
     >
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-4xl font-black text-amber-400 text-center mb-1 tracking-wide">
-          Magic Birthday Invitation
+        <h1 className="text-4xl font-black text-amber-400 text-center mb-1 tracking-wide font-[family-name:var(--font-cinzel)]">
+          Invitación Mágica de Cumpleaños
         </h1>
-        <p className="text-amber-200 text-center mb-1 text-sm italic">
+        <p className="text-amber-200 text-center mb-1 text-sm italic font-[family-name:var(--font-im-fell)]">
           Celebración del {config.birthday.age}° Cumpleaños de {config.birthday.name}
         </p>
-        <p className="text-gray-500 text-center mb-10 text-xs">
+        <p className="text-gray-500 text-center mb-10 text-xs italic font-[family-name:var(--font-im-fell)]">
           Cada invitado recibe un enlace personalizado con su combinación de colores
         </p>
 

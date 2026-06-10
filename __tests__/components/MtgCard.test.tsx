@@ -17,7 +17,7 @@ describe('MtgCard', () => {
 
   it('renders the age', () => {
     render(<MtgCard guild={GUILDS.ub} config={mockConfig} />)
-    expect(screen.getByText(/28/)).toBeInTheDocument()
+    expect(screen.getAllByText(/28/).length).toBeGreaterThan(0)
   })
 
   it('renders party date, time, and venue', () => {

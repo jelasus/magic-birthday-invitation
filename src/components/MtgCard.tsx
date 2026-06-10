@@ -25,7 +25,7 @@ export function MtgCard({ guild, config, guestName }: MtgCardProps) {
         style={{ backgroundColor: guild.nameBarColor }}
       >
         <span className="font-bold text-xs text-gray-900 leading-tight">
-          Cumpleaños de {birthday.name}
+          Celebración del {birthday.age}° Cumpleaños de {birthday.name}
         </span>
         <div className="flex gap-1 shrink-0">
           {guild.manaColors.map((color, i) => (
