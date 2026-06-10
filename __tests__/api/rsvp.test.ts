@@ -64,4 +64,18 @@ describe('POST /api/rsvp', () => {
     const res = await POST(req)
     expect(res.status).toBe(400)
   })
+
+  it('does not send a message field to the database', async () => {
+    mockInsert.mockClear()
+    await POST(makeRequest({ guest_name: 'Alice', attending: true, message: 'hola', colors: 'ub' }))
+    expect(mockInsert.mock.calls[0][0]).not.toHaveProperty('message')
+  })
+
+  it('logs the underlying Supabase error when the insert fails', async () => {
+    const spy = jest.spyOn(console, 'error').mockImplementation(() => {})
+    mockInsert.mockResolvedValueOnce({ error: { message: 'boom', code: '42501' } })
+    await POST(makeRequest({ guest_name: 'Alice', attending: false }))
+    expect(spy).toHaveBeenCalled()
+    spy.mockRestore()
+  })
 })

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseClient } from '@/lib/supabase'
 
 export async function POST(req: NextRequest) {
-  let body: { guest_name?: unknown; attending?: unknown; message?: unknown; colors?: unknown }
+  let body: { guest_name?: unknown; attending?: unknown; colors?: unknown }
   try {
     body = await req.json()
   } catch {
@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  const { guest_name, attending, message, colors } = body
+  const { guest_name, attending, colors } = body
 
   if (!guest_name || attending === undefined || attending === null) {
     return NextResponse.json(
@@ -34,11 +34,13 @@ export async function POST(req: NextRequest) {
   const { error } = await supabase.from('rsvps').insert({
     guest_name: String(guest_name).trim().slice(0, 200),
     attending: Boolean(attending),
-    message: message ? String(message).trim().slice(0, 2000) : null,
     colors: colors ? String(colors).slice(0, 10) : null,
   })
 
   if (error) {
+    // Surface the real Postgres/Supabase error in the server logs so the
+    // underlying cause (RLS policy, missing table/column, bad key) is visible.
+    console.error('RSVP insert failed:', error)
     return NextResponse.json(
       { error: 'Ocurrió un error. Por favor intenta de nuevo.' },
       { status: 500 }
