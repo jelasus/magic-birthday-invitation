@@ -25,8 +25,14 @@ describe('getPartyConfig', () => {
   it('falls back to party.json when PARTY_CONFIG is not set', () => {
     delete process.env.PARTY_CONFIG
     const config = getPartyConfig()
-    expect(config.birthday.name).toBeTruthy()
-    expect(config.party.venue).toBeTruthy()
-    expect(config.card.setSymbol).toBeTruthy()
+    expect(config.birthday.name).toBe('Gandalf')
+    expect(config.party.venue).toBe('La Comarca')
+    expect(config.card.setSymbol).toBe('🎂')
+  })
+
+  it('falls back to party.json when PARTY_CONFIG is malformed JSON', () => {
+    process.env.PARTY_CONFIG = 'not valid json{'
+    const config = getPartyConfig()
+    expect(config.birthday.name).toBe('Gandalf')
   })
 })
