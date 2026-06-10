@@ -35,4 +35,8 @@ describe('getPartyConfig', () => {
     const config = getPartyConfig()
     expect(config.birthday.name).toBe('Gandalf')
   })
+
+  it('defaults the card art to the cake illustration', () => {
+    expect(getPartyConfig().card.artImageUrl).toBe('/images/cake-art.svg')
+  })
 })
