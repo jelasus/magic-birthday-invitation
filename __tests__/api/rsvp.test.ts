@@ -8,9 +8,9 @@ const mockInsert = jest.fn()
 const mockFrom = jest.fn()
 
 jest.mock('@/lib/supabase', () => ({
-  supabase: {
+  getSupabaseClient: () => ({
     from: (...args: unknown[]) => mockFrom(...args),
-  },
+  }),
 }))
 
 beforeAll(() => {

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { getSupabaseClient } from '@/lib/supabase'
 
 export async function POST(req: NextRequest) {
   let body: { guest_name?: unknown; attending?: unknown; message?: unknown; colors?: unknown }
@@ -18,6 +18,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       { error: 'Faltan campos requeridos.' },
       { status: 400 }
+    )
+  }
+
+  let supabase
+  try {
+    supabase = getSupabaseClient()
+  } catch {
+    return NextResponse.json(
+      { error: 'El servicio no está disponible en este momento.' },
+      { status: 503 }
     )
   }
 
