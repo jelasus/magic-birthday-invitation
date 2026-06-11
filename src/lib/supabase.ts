@@ -14,8 +14,13 @@ export function getSupabaseClient(): SupabaseClient {
   const url = process.env.SUPABASE_URL
   const key = process.env.SUPABASE_ANON_KEY
 
-  if (!url || !key) {
-    throw new Error('SUPABASE_URL and SUPABASE_ANON_KEY must be set in environment variables.')
+  // A non-empty placeholder (e.g. "your_supabase_url_here") is not a valid URL,
+  // so validate the format up front and fail with a clear, actionable message
+  // instead of a cryptic client-construction error.
+  if (!url || !key || !/^https?:\/\//.test(url)) {
+    throw new Error(
+      'Supabase no está configurado. Define SUPABASE_URL (https://tu-proyecto.supabase.co) y SUPABASE_ANON_KEY en el entorno.'
+    )
   }
 
   client = createClient(url, key)

@@ -27,6 +27,11 @@ body {
   inset: 0;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  /* Clip each face to the card box so neither face can bleed outside the card
+     (e.g. front content showing below the back). Safe for the 3D context: the
+     faces have no 3D children that need preserve-3d. */
+  overflow: hidden;
+  border-radius: 16px;
 }
 
 .card-flip__face--back {

@@ -47,12 +47,14 @@ describe('POST /api/rsvp', () => {
     expect(res.status).toBe(400)
   })
 
-  it('returns 500 when Supabase returns an error', async () => {
-    mockInsert.mockResolvedValueOnce({ error: new Error('DB error') })
+  it('returns 500 and surfaces the underlying error message when the insert fails', async () => {
+    const spy = jest.spyOn(console, 'error').mockImplementation(() => {})
+    mockInsert.mockResolvedValueOnce({ error: { message: 'new row violates row-level security policy' } })
     const res = await POST(makeRequest({ guest_name: 'Alice', attending: false }))
     expect(res.status).toBe(500)
     const json = await res.json()
-    expect(json.error).toBe('Ocurrió un error. Por favor intenta de nuevo.')
+    expect(json.error).toContain('row-level security')
+    spy.mockRestore()
   })
 
   it('returns 400 for malformed request body', async () => {

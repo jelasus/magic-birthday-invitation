@@ -49,9 +49,8 @@ export function CardFront({ card, config, guestName }: CardFrontProps) {
         <div className="rounded-md p-[3px]" style={{ background: 'linear-gradient(180deg,#1c1c1c,#000)' }}>
           <div
             data-testid="card-art"
-            className="w-full rounded-[3px]"
+            className="h-40 w-full rounded-[3px]"
             style={{
-              aspectRatio: '4 / 3',
               backgroundImage: `url(${card.art}), ${frame.frameGradient}`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
