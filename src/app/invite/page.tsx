@@ -38,12 +38,12 @@ export default async function InvitePage({ searchParams }: InvitePageProps) {
         <MapEmbed url={config.party.mapsEmbedUrl} />
       </div>
 
-      <div className="mt-10 w-full max-w-sm mb-16">
+      {/* <div className="mt-10 w-full max-w-sm mb-16">
         <h2 className="text-amber-400 font-bold text-lg mb-3 font-[family-name:var(--font-cinzel)]">
           ✅ Confirmar asistencia
         </h2>
         <RsvpForm guestName={guestName} cardId={card.id} />
-      </div>
+      </div> */}
     </main>
   )
 }
