@@ -24,9 +24,9 @@ export async function POST(req: NextRequest) {
   let supabase
   try {
     supabase = getSupabaseClient()
-  } catch {
+  } catch (e) {
     return NextResponse.json(
-      { error: 'El servicio no está disponible en este momento.' },
+      { error: e instanceof Error ? e.message : 'El servicio no está disponible en este momento.' },
       { status: 503 }
     )
   }
@@ -38,11 +38,12 @@ export async function POST(req: NextRequest) {
   })
 
   if (error) {
-    // Surface the real Postgres/Supabase error in the server logs so the
-    // underlying cause (RLS policy, missing table/column, bad key) is visible.
+    // Surface the real Postgres/Supabase error — both in the server logs and in
+    // the response — so the underlying cause (RLS policy, missing table/column,
+    // bad key) is visible to whoever is submitting/debugging the RSVP.
     console.error('RSVP insert failed:', error)
     return NextResponse.json(
-      { error: 'Ocurrió un error. Por favor intenta de nuevo.' },
+      { error: `No se pudo guardar la respuesta: ${error.message}` },
       { status: 500 }
     )
   }
